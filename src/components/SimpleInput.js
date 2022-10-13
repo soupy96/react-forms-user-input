@@ -1,16 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 const SimpleInput = (props) => {
-  const nameInputRef = useRef();
   const [enteredName, setEnteredName] = useState('');
-  const [enteredNameIsValid, setenteredNameIsValid] = useState(false);
   const [enteredNameTouched, setenteredNameTouched] = useState(false);
 
-  useEffect(() => {
-    if (enteredNameIsValid) {
-      console.log('Name Input is valid!');
-    }
-  }, [enteredNameIsValid]);
+  const enteredNameIsValid = enteredName.trim() !== '';
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
   const nameInputChangeHandler = (e) => {
     setEnteredName(e.target.value);
@@ -18,11 +13,6 @@ const SimpleInput = (props) => {
 
   const nameInputBlurHandler = (e) => {
     setenteredNameTouched(true);
-
-    if (enteredName.trim() === '') {
-      setenteredNameIsValid(false);
-      return;
-    }
   };
 
   const formSubmissionHandler = (e) => {
@@ -30,23 +20,13 @@ const SimpleInput = (props) => {
 
     setenteredNameTouched(true);
 
-    if (enteredName.trim() === '') {
-      setenteredNameIsValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    setenteredNameIsValid(true);
-
-    console.log(enteredName);
-
-    const enteredValue = nameInputRef.current.value;
-    console.log(enteredValue);
-
-    // nameInputRef.current.value = ''; => THIS NOT IDEAL, DONT MANIP THE DOM, REACT DOES THAT
     setEnteredName('');
+    setenteredNameTouched(false);
   };
-
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
   const nameInputClasses = nameInputIsInvalid
     ? 'form-control invalid'
@@ -57,8 +37,7 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor='name'>Your Name</label>
         <input
-          ref={nameInputRef}
-          // onChange is for the submission on the form
+          // onChange is for the whenever the user types something in the field
           onChange={nameInputChangeHandler}
           // onBlur is for the when the input is focused by the user
           onBlur={nameInputBlurHandler}
