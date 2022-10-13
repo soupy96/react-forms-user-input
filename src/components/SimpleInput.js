@@ -16,6 +16,15 @@ const SimpleInput = (props) => {
     setEnteredName(e.target.value);
   };
 
+  const nameInputBlurHandler = (e) => {
+    setenteredNameTouched(true);
+
+    if (enteredName.trim() === '') {
+      setenteredNameIsValid(false);
+      return;
+    }
+  };
+
   const formSubmissionHandler = (e) => {
     e.preventDefault();
 
@@ -49,7 +58,10 @@ const SimpleInput = (props) => {
         <label htmlFor='name'>Your Name</label>
         <input
           ref={nameInputRef}
+          // onChange is for the submission on the form
           onChange={nameInputChangeHandler}
+          // onBlur is for the when the input is focused by the user
+          onBlur={nameInputBlurHandler}
           type='text'
           id='name'
           value={enteredName}
