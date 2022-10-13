@@ -7,11 +7,8 @@ const SimpleInput = (props) => {
   const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
 
   const enteredNameIsValid = enteredName.trim() !== '';
-  let enteredEmailIsValid = false;
-
-  if (/(.+)@(.+){2,}\.(.+){2,}/.test(enteredEmail)) {
-    enteredEmailIsValid = true;
-  }
+  // got the email regex from stackoverflow
+  const enteredEmailIsValid = /(.+)@(.+){2,}\.(.+){2,}/.test(enteredEmail);
 
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
   const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
